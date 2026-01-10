@@ -87,11 +87,19 @@ async function findEmployeeByDiscordId(discordId) {
     
     if (sheetDiscordId === discordId) {
       console.log('✅ Employé trouvé !');
-      return {
+      
+      const employee = {
         nom: row[2] ? row[2].toString().trim() : 'Inconnu',
         grade: row[4] ? row[4].toString().trim() : 'Aucun',
-        discordId: sheetDiscordId
+        discordId: sheetDiscordId,
+        id: row[1] ? row[1].toString().trim() : '',
+        rib: row[3] ? row[3].toString().trim() : '',
+        tel: row[5] ? row[5].toString().trim() : '',
+        gmail: row[8] ? row[8].toString().trim() : ''
       };
+      
+      console.log('📋 Grade trouvé:', employee.grade);
+      return employee;
     }
   }
 
@@ -183,6 +191,7 @@ app.get('/auth/discord/callback', async (req, res) => {
     const userRole = getRoleFromGrade(employee.grade);
     console.log('✅ Rôle:', userRole);
     
+    // IMPORTANT: Stocker TOUTES les infos y compris le grade
     req.session.user = {
       id: discordUser.id,
       username: discordUser.username,
@@ -192,8 +201,14 @@ app.get('/auth/discord/callback', async (req, res) => {
         : `https://cdn.discordapp.com/embed/avatars/0.png`,
       role: userRole,
       employeeName: employee.nom,
-      grade: employee.grade
+      grade: employee.grade,  // ← GRADE ICI
+      employeeId: employee.id,
+      rib: employee.rib,
+      tel: employee.tel,
+      gmail: employee.gmail
     };
+    
+    console.log('💾 Session créée avec grade:', req.session.user.grade);
     
     req.session.save((err) => {
       if (err) {
@@ -201,7 +216,7 @@ app.get('/auth/discord/callback', async (req, res) => {
         return res.redirect(`${process.env.FRONTEND_URL}?error=session_error`);
       }
       
-      console.log('✅ Session créée !');
+      console.log('✅ Session sauvegardée !');
       res.redirect(`${process.env.FRONTEND_URL}?auth=success`);
     });
     
@@ -214,7 +229,7 @@ app.get('/auth/discord/callback', async (req, res) => {
 app.get('/api/check-auth', (req, res) => {
   console.log('🔍 Check auth');
   if (req.session.user) {
-    console.log('✅ Authentifié:', req.session.user.employeeName);
+    console.log('✅ Authentifié:', req.session.user.employeeName, '| Grade:', req.session.user.grade);
     res.json({ authenticated: true, user: req.session.user });
   } else {
     console.log('❌ Pas authentifié');
