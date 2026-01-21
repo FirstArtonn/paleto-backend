@@ -110,8 +110,10 @@ async function findEmployeeByDiscordId(discordId) {
 function getRoleFromGrade(grade) {
   const gradeUpper = grade.toUpperCase();
   
-  // ADMIN : Patron et Chef
-  if (gradeUpper.includes('PATRON') || gradeUpper.includes('CHEF')) {
+  // ADMIN : Patron, Chef, Responsable d'atelier, Chef d'atelier
+  if (gradeUpper.includes('PATRON') || 
+      gradeUpper.includes('CHEF') || 
+      gradeUpper.includes('ATELIER')) {
     return 'admin';
   }
   
