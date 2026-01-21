@@ -114,16 +114,15 @@ function getRoleFromGrade(grade) {
     return 'admin';
   }
   
-  if (gradeUpper.includes('DRH') || gradeUpper.includes('RH')) {
-    return 'rh';
-  }
-  
-  if (gradeUpper.includes('RESPONSABLE') || 
+  if (gradeUpper.includes('DRH') || gradeUpper.includes('RH')) || gradeUpper.includes('RESPONSABLE') || 
       gradeUpper.includes('CHEF') || 
       gradeUpper.includes('CONFIRMÉ') || 
       gradeUpper.includes('MÉCANO') || 
       gradeUpper.includes('APPRENTI') || 
       gradeUpper.includes('STAGIAIRE')) {
+    return 'rh';
+  }
+  
     return 'employee';
   }
   
