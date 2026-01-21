@@ -110,11 +110,13 @@ async function findEmployeeByDiscordId(discordId) {
 function getRoleFromGrade(grade) {
   const gradeUpper = grade.toUpperCase();
   
-  if (gradeUpper.includes('PATRON') || gradeUpper.includes('CO PATRON')) {
+  if (gradeUpper.includes('PATRON') || gradeUpper.includes('CHEF')) {
     return 'admin';
   }
   
-  if (gradeUpper.includes('DRH') || gradeUpper.includes('RH')) || gradeUpper.includes('RESPONSABLE') || 
+  if (gradeUpper.includes('DRH') || 
+      gradeUpper.includes('RH')) || 
+      gradeUpper.includes('RESPONSABLE') || 
       gradeUpper.includes('CHEF') || 
       gradeUpper.includes('CONFIRMÉ') || 
       gradeUpper.includes('MÉCANO') || 
