@@ -110,14 +110,15 @@ async function findEmployeeByDiscordId(discordId) {
 function getRoleFromGrade(grade) {
   const gradeUpper = grade.toUpperCase();
   
+  // ADMIN : Patron et Chef
   if (gradeUpper.includes('PATRON') || gradeUpper.includes('CHEF')) {
     return 'admin';
   }
   
+  // RH : DRH, RH, Responsable, Confirmé, Mécano, Apprenti, Stagiaire
   if (gradeUpper.includes('DRH') || 
-      gradeUpper.includes('RH')) || 
+      gradeUpper.includes('RH') || 
       gradeUpper.includes('RESPONSABLE') || 
-      gradeUpper.includes('CHEF') || 
       gradeUpper.includes('CONFIRMÉ') || 
       gradeUpper.includes('MÉCANO') || 
       gradeUpper.includes('APPRENTI') || 
@@ -125,10 +126,8 @@ function getRoleFromGrade(grade) {
     return 'rh';
   }
   
-    return 'employee';
-  }
-  
-  return 'visitor';
+  // EMPLOYEE : Tous les autres grades reconnus
+  return 'employee';
 }
 
 app.get('/health', (req, res) => {
